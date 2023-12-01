@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "ResourceBased",
+            "Sid": "VPC",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateTags",
@@ -17,15 +17,45 @@
             }
         },
         {
-            "Sid": "ServiceBased",
+            "Sid": "Global",
             "Effect": "Allow",
             "Action": [
                 "ec2:DescribeVpcs",
-                // TODO: I was expecting for this action to be scoped only on the tag/Name condition,
-                // it is not working for some reason
-                "ec2:DescribeVpcAttribute"
+                "ec2:RunInstances",
+                "ec2:DescribeVpcAttribute",
+                "ec2:DescribeInstances",
+                "ec2:DescribeInstanceTypes",
+                "ec2:DescribeTags",
+                "ec2:DescribeVolumes"
             ],
             "Resource": "*"
+        },
+        {
+            "Sid": "InstanceRequest",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateTags"
+            ],
+            "Resource": "arn:aws:ec2:us-east-1:383709273368:instance/*",
+            "Condition": {
+                "StringLike": {
+                    "aws:RequestTag/Name": "networkstudy-*"
+                }
+            }
+        },
+        {
+            "Sid": "InstanceResource",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstanceAttribute",
+                "ec2:TerminateInstances"
+            ],
+            "Resource": "arn:aws:ec2:us-east-1:383709273368:instance/*",
+            "Condition": {
+                "StringLike": {
+                    "aws:ResourceTag/Name": "networkstudy-*"
+                }
+            }
         }
     ]
 }
