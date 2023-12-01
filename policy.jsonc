@@ -2,10 +2,9 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "VPC",
+            "Sid": "VPCRequest",
             "Effect": "Allow",
             "Action": [
-                "ec2:CreateTags",
                 "ec2:CreateVpc",
                 "ec2:DescribeVpcAttribute"
             ],
@@ -13,6 +12,46 @@
             "Condition": {
                 "StringLike": {
                     "aws:RequestTag/Name": "networkstudy-*"
+                }
+            }
+        },
+        {
+            "Sid": "VPCResource",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateSubnet"
+            ],
+            "Resource": "arn:aws:ec2:us-east-1:383709273368:vpc/*",
+            "Condition": {
+                "StringLike": {
+                    "aws:ResourceTag/Name": "networkstudy-*"
+                }
+            }
+        },
+        {
+            "Sid": "SubnetRequest",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateSubnet"
+            ],
+            "Resource": "arn:aws:ec2:us-east-1:383709273368:subnet/*",
+            "Condition": {
+                "StringLike": {
+                    "aws:RequestTag/Name": "networkstudy-*"
+                }
+            }
+        },
+        {
+            "Sid": "SubnetResource",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateSubnet",
+                "ec2:DeleteSubnet"
+            ],
+            "Resource": "arn:aws:ec2:us-east-1:383709273368:subnet/*",
+            "Condition": {
+                "StringLike": {
+                    "aws:ResourceTag/Name": "networkstudy-*"
                 }
             }
         },
@@ -26,17 +65,23 @@
                 "ec2:DescribeInstances",
                 "ec2:DescribeInstanceTypes",
                 "ec2:DescribeTags",
-                "ec2:DescribeVolumes"
+                "ec2:DescribeVolumes",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeNetworkInterfaces"
             ],
             "Resource": "*"
         },
         {
-            "Sid": "InstanceRequest",
+            "Sid": "CreateTag",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateTags"
             ],
-            "Resource": "arn:aws:ec2:us-east-1:383709273368:instance/*",
+            "Resource": [
+                "arn:aws:ec2:us-east-1:383709273368:instance/*",
+                "arn:aws:ec2:us-east-1:383709273368:vpc/*",
+                "arn:aws:ec2:us-east-1:383709273368:subnet/*"
+            ],
             "Condition": {
                 "StringLike": {
                     "aws:RequestTag/Name": "networkstudy-*"
