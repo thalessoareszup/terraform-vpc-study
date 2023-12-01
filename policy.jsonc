@@ -1,0 +1,31 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ResourceBased",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateTags",
+                "ec2:CreateVpc",
+                "ec2:DescribeVpcAttribute"
+            ],
+            "Resource": "arn:aws:ec2:us-east-1:383709273368:vpc/*",
+            "Condition": {
+                "StringLike": {
+                    "aws:RequestTag/Name": "networkstudy-*"
+                }
+            }
+        },
+        {
+            "Sid": "ServiceBased",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeVpcs",
+                // TODO: I was expecting for this action to be scoped only on the tag/Name condition,
+                // it is not working for some reason
+                "ec2:DescribeVpcAttribute"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
