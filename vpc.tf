@@ -42,3 +42,24 @@ resource "aws_route_table_association" "thms-rta-subnet1" {
   subnet_id      = aws_subnet.thms-pub-subnet1.id
   route_table_id = aws_route_table.thms-route-table.id
 }
+
+resource "aws_security_group" "ssh_access" {
+  name        = "allow_ssh"
+  description = "Allow SSH inbound traffic"
+  vpc_id      = aws_vpc.thms-vpc.id
+
+  ingress {
+    description = "SSH from anywhere"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
