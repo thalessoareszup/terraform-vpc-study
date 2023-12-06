@@ -9,6 +9,8 @@ resource "aws_vpc" "thms-vpc" {
 resource "aws_subnet" "thms-pub-subnet1" {
   vpc_id     = aws_vpc.thms-vpc.id
   cidr_block = "10.0.1.0/24"
+  # "on_launch here means when an ec2 instance is launched inside the subnet"
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "networkstudy-pub-subnet1"
@@ -39,13 +41,4 @@ resource "aws_route_table" "thms-route-table" {
 resource "aws_route_table_association" "thms-rta-subnet1" {
   subnet_id      = aws_subnet.thms-pub-subnet1.id
   route_table_id = aws_route_table.thms-route-table.id
-}
-
-resource "aws_network_interface" "thms-eni" {
-  subnet_id   = aws_subnet.thms-pub-subnet1.id
-  private_ips = ["10.0.1.10"] 
-
-  tags = {
-    Name = "networkstudy-eni"
-  }
 }

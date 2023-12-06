@@ -1,11 +1,7 @@
 resource "aws_instance" "networkstudy-m1" {
     ami = "ami-0fa1ca9559f1892ec"
     instance_type = "t1.micro"
-
-    network_interface {
-        network_interface_id = aws_network_interface.thms-eni.id
-        device_index = 0
-    }
+    subnet_id     = aws_subnet.thms-pub-subnet1.id
 
     root_block_device {
         volume_type           = "gp2"
